@@ -1,5 +1,6 @@
 package com.example.dani.calculadorav2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,50 +32,102 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         num1 = (EditText) findViewById(R.id.etnum1);
         num2 = (EditText) findViewById(R.id.etnum2);
-        res = (EditText) findViewById(R.id.tvResultado);
+        res = (TextView) findViewById(R.id.tvResultado);
         calcular = (Button) findViewById(btnCalcular);
         spinner = (Spinner) findViewById(R.id.spinner);
         String[] opciones = {"+", "-", "x", "/"};
         ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones);
         spinner.setAdapter(aa);
-        proceso();
+
+
+        calcular.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Context context = getApplicationContext();
+                try{
+
+                    int p = spinner.getSelectedItemPosition();
+                    int valor1=Integer.parseInt(num1.getText().toString());
+                    int valor2=Integer.parseInt(num2.getText().toString());
+
+                    int total=0;
+                    switch(p){
+                        case 0:
+                            total=valor1+valor2;
+                            break;
+                        case 1:
+                            total=valor1-valor2;
+                            break;
+                        case 2:
+                            total=valor1*valor2;
+                            break;
+                        case 3:
+                            total=valor1/valor2;
+                        default:
+                            Toast.makeText(context, "Operacion no valida", Toast.LENGTH_LONG);
+                    }
+                    res.setText("Resultado:"+total);
+
+                }
+                catch(NumberFormatException e)
+                {
+                    res.setText("Resultado: faltan datos");
+                }
+                catch(ArithmeticException e)
+                {
+                    res.setText("Resultado: error en operacion");
+                }
+            }
+        });
+
     }
 
+    // Create an anonymous implementation of OnClickListener
+
+/*
     public void proceso()
     {
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-    {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
         @Override
-    public void onItemSelected(AdapterView av, View v, int p, long id)
-    { try
-    { if(p==0)
-        res.setText("Resultado: Seleccione operacion");
-    else
-    { int valor1=Integer.parseInt(num1.getText().toString());
-        int valor2=Integer.parseInt(num2.getText().toString());
-        int total=0;
-        switch(p)
-        { case 1: total=valor1+valor2; break;
-            case 2: total=valor1-valor2; break;
-            case 3: total=valor1*valor2; break;
-            case 4: total=valor1/valor2;;
+        public void onItemSelected(AdapterView av, View v, int p, long id) {
+            Context context = getApplicationContext();
+            try
+            { if(p==0)
+                res.setText("Resultado: Seleccione operacion");
+            else
+                { int valor1=Integer.parseInt(num1.getText().toString());
+                    int valor2=Integer.parseInt(num2.getText().toString());
+                    int total=0;
+                    switch(p){
+                        case 0:
+                            total=valor1+valor2;
+                            break;
+                        case 1:
+                            total=valor1-valor2;
+                            break;
+                        case 2:
+                            total=valor1*valor2;
+                            break;
+                        case 3:
+                            total=valor1/valor2;
+                        default:
+                            Toast.makeText(context, "Operacion no valida", Toast.LENGTH_LONG);
+                    }
+                    res.setText("Resultado:"+total);
+                }
+            }
+            catch(NumberFormatException e)
+            { res.setText("Resultado: faltan datos");
+            }
+            catch(ArithmeticException e)
+            { res.setText("Resultado: error en operacion");
+            }
+            }
+                @Override
+                public void onNothingSelected(AdapterView p)
+                { }
+            });
         }
-        res.setText("Resultado:"+total);
-    }
-    }
-    catch(NumberFormatException e)
-    { res.setText("Resultado: faltan datos");
-    }
-    catch(ArithmeticException e)
-    { res.setText("Resultado: error en operacion");
-    }
-    }
-        @Override
-        public void onNothingSelected(AdapterView p)
-        { }
-    });
-    }
-
+*/
 
 
 
